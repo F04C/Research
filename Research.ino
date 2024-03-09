@@ -40,24 +40,25 @@ void setup()
 }
 
 void loop() {
-  // Check for cracks and display on the 8x8 LED matrix
-  for (int row = 0; row < 8; row++) 
-  {
-    int rowCracked = digitalRead(ROW_START_PIN + row);
-    for (int col = 0; col < 8; col++) 
-    {
-      int colCracked = digitalRead(COL_START_PIN + col);
+  while (true) {  // Add an outer loop for continuous checking
+    // Check for cracks and display on the 8x8 LED matrix
+    for (int row = 0; row < 8; row++) {
+      int rowCracked = digitalRead(ROW_START_PIN + row);
+      for (int col = 0; col < 8; col++) {
+        int colCracked = digitalRead(COL_START_PIN + col);
 
-      if (rowCracked == LOW || colCracked == LOW) {
-        Serial.println("Crack detected at Row: " + String(row) + ", Col: " + String(col));
-        lc.setLed(0, row, col, true);
-      } else {
-        lc.setLed(0, row, col, false);
+        if (rowCracked == LOW || colCracked == LOW) {
+          Serial.println("Crack detected at Row: " + String(row) + ", Col: " + String(col));
+          lc.setLed(0, row, col, true);
+        } else {
+          lc.setLed(0, row, col, false);
+        }
+        //delay(2000);
+        delayMicroseconds(1000);
       }
-      //delay(2000);
-      delayMicroseconds(1000);
     }
+    // Uncomment the line below if there's a need for a delay between cycles
+    // delay(500);
   }
-  // Uncomment the line below if there's a need of a delay between cycles
-  // delay(500);
 }
+
